@@ -326,5 +326,15 @@ autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 highlight Pmenu ctermbg=238 gui=bold
 
 let g:ragtag_global_maps = 1
-let g:rsenseHome = "C:\rsense-0.2"
-let g:rsenseUseOmniFunc = 1
+"let g:rsenseHome = "C:\rsense-0.2"
+"let g:rsenseUseOmniFunc = 1
+
+function! UPDATE_TAGS()
+  let _f_ = expand("%:p")
+  let _cmd_ = '"ctags -a -f /dvr/tags --c++-kinds=+p --fields=+iaS --extra=+q " ' . '"' . _f_ . '"'
+  let _resp = system(_cmd_)
+  unlet _cmd_
+  unlet _f_
+  unlet _resp
+endfunction
+autocmd BufWritePost *.cpp,*.h,*.c call UPDATE_TAGS()
