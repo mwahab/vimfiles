@@ -317,7 +317,8 @@ map <F5> :!ruby %<CR>
 
 imap hh =>
 
-"ruby
+"ruby"
+autocmd FileType python set omnifunc=pythoncomplete#Complete
 autocmd FileType ruby,eruby set omnifunc=rubycomplete#Complete
 autocmd FileType ruby,eruby let g:rubycomplete_buffer_loading = 1
 autocmd FileType ruby,eruby let g:rubycomplete_rails = 1
@@ -325,9 +326,13 @@ autocmd FileType ruby,eruby let g:rubycomplete_classes_in_global = 1
 "improve autocomplete menu color
 highlight Pmenu ctermbg=238 gui=bold
 
-let g:ragtag_global_maps = 1
-"let g:rsenseHome = "C:\rsense-0.2"
-"let g:rsenseUseOmniFunc = 1
+let g:rsenseHome = "/usr/lib/rsense"
+let g:rsenseUseOmniFunc = 1
+
+" open the definition in a new tab
+map <C-\> :tab split<CR>:exec("tag ".expand("<cword>"))<CR>
+" open the definition in a new split
+map <A-]> :vsp <CR>:exec("tag ".expand("<cword>"))<CR>
 
 function! UPDATE_TAGS()
   let _f_ = expand("%:p")
@@ -337,4 +342,8 @@ function! UPDATE_TAGS()
   unlet _f_
   unlet _resp
 endfunction
-autocmd BufWritePost *.cpp,*.h,*.c call UPDATE_TAGS()
+autocmd BufWritePost *.cpp,*.h,*.c,*.py call UPDATE_TAGS()
+
+let Tlist_WinWidth = 35
+map <F4> :TlistToggle<cr>
+map <F8> :!ctags -R --c++-kinds=+p --fields=+iaS --extra=+q .<CR>
